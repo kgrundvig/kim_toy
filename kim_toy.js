@@ -83,7 +83,7 @@ var Dot = function (args) {
 	args = args || {};
 	this.position = args.position || vec2.create();
 	this.velocity = args.velocity || vec2.create();
-	this.speed = args.speed || 4;
+	this.speed = args.speed || Math.random() * 3 + 1;
 	this.hue = args.hue || Math.random();
 	this.color = hslaString(this.hue, 1, 0.5, 1);
 	this.velocity[0] = this.speed;
@@ -105,7 +105,7 @@ Dot.prototype = {
 };
 
 var myDotList = [];
-var howManyDots = 5;
+var howManyDots = 500;
 for (var i = 0; i < howManyDots; i++) {
 	myDotList.push(new Dot());
 };
