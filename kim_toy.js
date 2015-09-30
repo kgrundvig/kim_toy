@@ -29,6 +29,13 @@ var drawLine = function(v1, v2, color, lineWidth){
 	context.stroke();
 	context.restore();
 };
+var rotate = function(out, a, rad){
+	var angle = Math.atan2(a[1], a[0]) + rad;
+	var length = vec2.length(a);
+	out[0] = Math.cos(angle) * length;
+	out[1] = Math.sin(angle) * length;
+	return out;
+};
 
 var updateQueue = [];
 var go = true;
@@ -73,15 +80,19 @@ var Dot = function (args) {
 	args = args || {};
 	this.position = args.position || vec2.create();
 	this.velocity = args.velocity || vec2.create();
-	this.velocity[0] = 4;
+	this.speed = args.speed || 4;
+	this.velocity[0] = this.speed;
+	rotate(this.velocity, this.velocity, Math.random() * tau);
 	updateQueue.push(this);
 }
 Dot.prototype = {
 	update: function(time){
 		this.position[0] += this.velocity[0];
-		if(this.position[0] > halfWidth){
-			this.velocity[0] = -4;
-		}
+		this.position[1] += this.velocity[1];
+		if(this.position[0] > halfWidth){this.velocity[0] *= -1;}
+		if(this.position[0] < -halfWidth){this.velocity[0] *= -1;}
+		if(this.position[1] > halfHeight){this.velocity[1] *= -1;}
+		if(this.position[1] < -halfHeight){this.velocity[1] *= -1;}
 	},
 	render: function(time){
 		drawCircle(this.position, 10);
