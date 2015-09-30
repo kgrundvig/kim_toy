@@ -7,6 +7,9 @@ var height = canvas.height;
 var width = canvas.width;
 var halfHeight = Math.round(height / 2);
 var halfWidth = Math.round(width / 2);
+var hslaString = function(h, s, l, a){
+	return 'hsla('+ ((h % 1) * 360) +', '+ (s * 100) +'%, '+ (l * 100) +'%, '+ (a) +')';
+};
 var drawCircle = function(v, radius, color, lineWidth){
 	var context = this.context;
 	context.save();
@@ -81,10 +84,12 @@ var Dot = function (args) {
 	this.position = args.position || vec2.create();
 	this.velocity = args.velocity || vec2.create();
 	this.speed = args.speed || 4;
+	this.hue = args.hue || Math.random();
+	this.color = hslaString(this.hue, 1, 0.5, 1);
 	this.velocity[0] = this.speed;
 	rotate(this.velocity, this.velocity, Math.random() * tau);
 	updateQueue.push(this);
-}
+};
 Dot.prototype = {
 	update: function(time){
 		this.position[0] += this.velocity[0];
@@ -95,10 +100,14 @@ Dot.prototype = {
 		if(this.position[1] < -halfHeight){this.velocity[1] *= -1;}
 	},
 	render: function(time){
-		drawCircle(this.position, 10);
+		drawCircle(this.position, 10, this.color);
 	}
 };
 
-var myAwesomeDot = new Dot();
+var myDotList = [];
+var howManyDots = 5;
+for (var i = 0; i < howManyDots; i++) {
+	myDotList.push(new Dot());
+};
 
 start();
