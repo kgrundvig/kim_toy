@@ -72,11 +72,16 @@ var render = function(time){
 var Dot = function (args) {
 	args = args || {};
 	this.position = args.position || vec2.create();
+	this.velocity = args.velocity || vec2.create();
+	this.velocity[0] = 4;
 	updateQueue.push(this);
 }
 Dot.prototype = {
 	update: function(time){
-		this.position[0] += 4;
+		this.position[0] += this.velocity[0];
+		if(this.position[0] > halfWidth){
+			this.velocity[0] = -4;
+		}
 	},
 	render: function(time){
 		drawCircle(this.position, 10);
