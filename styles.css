@@ -7,7 +7,7 @@ html, body{
 }
 
 body{
-	background-color: #111;
+	background-color: #222;
 }
 
 canvas{
@@ -17,6 +17,6 @@ canvas{
 	left: 0;
 	right: 0;
 	margin: auto;
-	border: 1px solid #222;
+	border: 1px solid #333;
 	background-color: #000;
 }
