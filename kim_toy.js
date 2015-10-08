@@ -88,11 +88,11 @@ var Dot = function (args) {
 	this.color = hslaString(this.hue, 1, 0.5, 1);
 	this.velocity[0] = this.speed;
 	rotate(this.velocity, this.velocity, Math.random() * tau);
-	this.velocityCurl = (Math.random() - 0.5) * deg * 5;
 	updateQueue.push(this);
 };
 Dot.prototype = {
 	update: function(time){
+		this.velocityCurl = (Math.random() - 0.5) * deg * 20;
 		rotate(this.velocity, this.velocity, this.velocityCurl);
 		this.position[0] += this.velocity[0];
 		this.position[1] += this.velocity[1];
@@ -107,7 +107,7 @@ Dot.prototype = {
 };
 
 var myDotList = [];
-var howManyDots = 500;
+var howManyDots = 20;
 for (var i = 0; i < howManyDots; i++) {
 	myDotList.push(new Dot());
 };
