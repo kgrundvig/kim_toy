@@ -1,0 +1,13 @@
+{
+  "name": "kim_toy",
+  "main": "kim_toy.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/kgrundvig/kim_toy",
+  "authors": [
+    "Kim Grundvig <kgrundvig@yahoo.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "gl-matrix": "~2.3.1"
+  }
+}
