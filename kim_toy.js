@@ -56,9 +56,9 @@ var render = function(time){
 	}
 
 	context.save();
-	context.fillStyle = 'rgba(0, 0, 0, 0.5)';
+	context.fillStyle = 'rgba(0, 0, 0, 0.15)';
 	context.fillRect(0, 0, width, height);
-	context.globalCompositeOperation = 'lighter';
+	//context.globalCompositeOperation = 'lighter';
 	context.translate(halfWidth, halfHeight);
 
 	updateQueue.forEach(function(item){
@@ -91,6 +91,8 @@ var Dot = function (args) {
 	updateQueue.push(this);
 };
 Dot.prototype = {
+	eyeColor: hslaString(0, 0, 1, 1),
+	pupilColor: hslaString(0, 0, 0, 1),
 	update: function(time){
 		this.velocityCurl = (Math.random() - 0.5) * deg * 20;
 		rotate(this.velocity, this.velocity, this.velocityCurl);
@@ -102,7 +104,9 @@ Dot.prototype = {
 		if(this.position[1] < -halfHeight){this.velocity[1] *= -1;}
 	},
 	render: function(time){
-		drawCircle(this.position, 10, this.color);
+		drawCircle(this.position, 20, this.color);
+		drawCircle(this.position, 10, this.eyeColor);
+		drawCircle(this.position, 6, this.pupilColor);
 	}
 };
 
