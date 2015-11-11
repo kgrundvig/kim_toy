@@ -32,8 +32,11 @@ var drawLine = function(v1, v2, color, lineWidth){
 	context.stroke();
 	context.restore();
 };
+var getAngle = function(a){
+	return Math.atan2(a[1], a[0]);
+};
 var rotate = function(out, a, rad){
-	var angle = Math.atan2(a[1], a[0]) + rad;
+	var angle = getAngle(a) + rad;
 	var length = vec2.length(a);
 	out[0] = Math.cos(angle) * length;
 	out[1] = Math.sin(angle) * length;
@@ -88,25 +91,35 @@ var Dot = function (args) {
 	this.color = hslaString(this.hue, 1, 0.5, 1);
 	this.velocity[0] = this.speed;
 	rotate(this.velocity, this.velocity, Math.random() * tau);
+	this.angle = getAngle(this.velocity);
 	updateQueue.push(this);
 };
 Dot.prototype = {
+	radius: 20,
+	eyeRadius: 10,
+	pupilRadius: 6,
+	origin: vec2.create(),
+	eyeOrigin: vec2.fromValues(9, 0),
 	eyeColor: hslaString(0, 0, 1, 1),
 	pupilColor: hslaString(0, 0, 0, 1),
 	update: function(time){
 		this.velocityCurl = (Math.random() - 0.5) * deg * 20;
 		rotate(this.velocity, this.velocity, this.velocityCurl);
-		this.position[0] += this.velocity[0];
-		this.position[1] += this.velocity[1];
+		vec2.add(this.position, this.position, this.velocity);
+		this.angle = getAngle(this.velocity);
 		if(this.position[0] > halfWidth){this.velocity[0] *= -1;}
 		if(this.position[0] < -halfWidth){this.velocity[0] *= -1;}
 		if(this.position[1] > halfHeight){this.velocity[1] *= -1;}
 		if(this.position[1] < -halfHeight){this.velocity[1] *= -1;}
 	},
 	render: function(time){
-		drawCircle(this.position, 20, this.color);
-		drawCircle(this.position, 10, this.eyeColor);
-		drawCircle(this.position, 6, this.pupilColor);
+		context.save();
+		context.translate(this.position[0], this.position[1]);
+		context.rotate(this.angle);
+		drawCircle(this.origin, this.radius, this.color);
+		drawCircle(this.eyeOrigin, this.eyeRadius, this.eyeColor);
+		drawCircle(this.eyeOrigin, this.pupilRadius, this.pupilColor);
+		context.restore();
 	}
 };
 
